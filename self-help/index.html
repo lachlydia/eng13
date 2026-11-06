@@ -1,0 +1,371 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Self-help Vocabulary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single study column with a sticky step bar; each step is one panel, like a workbook page */
+:root{
+  --bg:#F3F2F6; --surface:#FFFFFF; --fg:#211B2A; --muted:#625A6E; --line:#DCD6E4;
+  --accent:#1D71B8; --accent-soft:#E3EFF9; --good:#23734F; --good-soft:#E1F1E8;
+  --bad:#B33A2E; --bad-soft:#F8E4E1; --warn:#8A5A0B; --warn-soft:#FBEFD8;
+  --display:"Young Serif",Georgia,"Times New Roman",serif;
+  --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#17141C; --surface:#211D28; --fg:#EEEAF3; --muted:#A79FB3; --line:#3A3445;
+  --accent:#7DB8EA; --accent-soft:#1B2E42; --good:#6CCB9B; --good-soft:#18342A;
+  --bad:#F08A7E; --bad-soft:#3E2220; --warn:#E8B860; --warn-soft:#3A2E17; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#17141C; --surface:#211D28; --fg:#EEEAF3; --muted:#A79FB3; --line:#3A3445;
+  --accent:#7DB8EA; --accent-soft:#1B2E42; --good:#6CCB9B; --good-soft:#18342A;
+  --bad:#F08A7E; --bad-soft:#3E2220; --warn:#E8B860; --warn-soft:#3A2E17; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:760px;margin:0 auto;padding-inline:16px;padding-block:0 64px}
+header.top{padding-block:28px 12px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(28px,6vw,40px);line-height:1.1;margin:.2em 0 .1em;text-wrap:balance}
+h2{font-family:var(--display);font-weight:400;font-size:26px;line-height:1.2;margin:0 0 6px;text-wrap:balance}
+h3{font-size:18px;margin:0}
+p{margin:0}
+nav.steps{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding:8px 16px;display:flex;gap:6px;overflow-x:auto}
+nav.steps a{flex:none;text-decoration:none;color:var(--muted);font-weight:700;font-size:15px;padding:7px 12px;border-radius:999px;border:1px solid transparent}
+nav.steps a .t{font-family:var(--mono);font-weight:400;font-size:12px;margin-left:4px}
+nav.steps a[aria-current="page"]{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+nav.steps a:focus-visible,button:focus-visible,select:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+section.panel{display:grid;gap:20px;padding-top:24px}
+.lead{color:var(--muted)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;gap:14px;min-width:0}
+.goal{border-left:5px solid var(--accent)}
+.goal p.g{font-family:var(--display);font-size:21px;line-height:1.35}
+blockquote{margin:0;font-family:var(--display);font-size:20px;line-height:1.4;padding-left:14px;border-left:3px solid var(--line)}
+.timeline{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.timeline li{display:grid;grid-template-columns:72px 1fr;gap:12px;align-items:baseline}
+.timeline .min{font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.levels{display:flex;gap:8px;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--fg);padding:8px 14px;font-weight:700}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--surface)}
+button.lvl[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.item{display:grid;gap:8px;padding:12px 0;border-top:1px solid var(--line)}
+.item:first-child{border-top:0;padding-top:0}
+.item.ok{--mark:var(--good)} .item.no{--mark:var(--bad)}
+.item.ok,.item.no{box-shadow:inset 4px 0 0 var(--mark);padding-left:12px}
+select,textarea,input[type=text]{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;max-width:100%}
+textarea{min-height:170px;resize:vertical;line-height:1.5}
+.small{font-size:14px;color:var(--muted)}
+.mono{font-family:var(--mono);font-size:13px}
+.score{font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.fb{font-size:15px;border-radius:8px;padding:10px 12px}
+.fb.good{background:var(--good-soft);color:var(--good)} .fb.bad{background:var(--bad-soft);color:var(--bad)} .fb.warn{background:var(--warn-soft);color:var(--warn)}
+.fb ul{margin:4px 0 0;padding-left:20px}
+.choices{display:grid;gap:6px}
+.choices label{display:flex;gap:8px;align-items:flex-start;padding:6px 8px;border-radius:6px;cursor:pointer}
+.choices label:hover{background:var(--bg)}
+.choices label.right{background:var(--good-soft)} .choices label.wrong{background:var(--bad-soft)}
+.tf{display:flex;gap:8px}
+.tf button[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+.model{background:var(--bg);border:1px dashed var(--line);border-radius:8px;padding:12px 14px;white-space:pre-line}
+.check{display:flex;gap:10px;align-items:flex-start}
+.check input{margin-top:5px;width:18px;height:18px;accent-color:var(--accent);flex:none}
+.meter{display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{flex:1;height:6px;border-radius:3px;background:var(--line);overflow:hidden;max-width:220px}
+.bar i{display:block;height:100%;background:var(--accent);width:0}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:560px}
+th,td{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top;font-size:15px}
+th{font-size:12px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:500}
+td input,td select{padding:6px 8px;font-size:15px}
+details summary{cursor:pointer;font-weight:700;color:var(--accent)}
+.lights{display:flex;gap:6px;flex-wrap:wrap}
+.lights button{font-weight:400;font-size:14px;padding:6px 10px}
+.lights button[data-v="green"][aria-pressed="true"]{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.lights button[data-v="amber"][aria-pressed="true"]{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.lights button[data-v="red"][aria-pressed="true"]{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.ticket{border:2px solid var(--fg);border-radius:10px;padding:16px;display:grid;gap:8px}
+.foot{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+@media (prefers-reduced-motion:no-preference){.bar i{transition:width .3s}}
+</style>
+<style>
+.flash{min-height:190px;display:grid;place-items:center;text-align:center;padding:28px 18px;border-radius:14px;border:2px solid var(--accent);background:var(--surface);cursor:pointer;font-family:var(--display);font-size:clamp(22px,4.5vw,30px);line-height:1.3;user-select:none}
+.flash.back{background:var(--accent-soft)}
+.flash small{display:block;font-family:var(--body);font-size:14px;color:var(--muted);margin-top:10px}
+.prog{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.chiplist{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:14px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.chip.k{border-color:var(--good);color:var(--good);background:var(--good-soft)}
+.chip.n{border-color:var(--warn);color:var(--warn);background:var(--warn-soft)}
+.pill{display:inline-block;font-family:var(--mono);font-size:12px;padding:2px 8px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+</style>
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">Eng 13 · Self-help · Practice at home</div>
+  <h1>Self-help: vocabulary trainer</h1>
+  <p class="lead">The 15 chunks from the word list for Text 4 (Emily Goddard, The Guardian, 2024). Practise them until you can use them in your comment and in the Abitur.</p>
+</header>
+<nav class="steps" aria-label="Exercises">
+  <a href="#start" data-tab="start">Start</a>
+  <a href="#cards" data-tab="cards">1 Flashcards</a>
+  <a href="#match" data-tab="match">2 Match</a>
+  <a href="#gaps" data-tab="gaps">3 Gap fill</a>
+  <a href="#type" data-tab="type">4 Type it</a>
+  <a href="#use" data-tab="use">5 Use it</a>
+  <a href="#review" data-tab="review">Review the lesson</a>
+</nav>
+
+<section class="panel" id="p-start">
+  <div class="card goal">
+    <div class="eyebrow">Your goal</div>
+    <p class="g">I can understand and use the 15 chunks from Text 4 – in a comment, in a discussion and in the Abitur.</p>
+  </div>
+  <div class="card">
+    <h3>How to practise (about 20 minutes)</h3>
+    <ol class="timeline">
+      <li><span class="min">1</span><span><b>Flashcards:</b> learn the chunks. Mark what you know.</span></li>
+      <li><span class="min">2</span><span><b>Match:</b> English chunk → German meaning.</span></li>
+      <li><span class="min">3</span><span><b>Gap fill:</b> use the chunks in new sentences.</span></li>
+      <li><span class="min">4</span><span><b>Type it:</b> German → English, from memory.</span></li>
+      <li><span class="min">5</span><span><b>Use it:</b> write your own sentences, e.g. for your comment.</span></li>
+    </ol>
+    <p class="small">Do the exercises again on another day. Repeating after 2–3 days helps most.</p>
+  </div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><h3>My progress</h3><button id="refresh">Update</button></div>
+    <div id="progress"></div>
+  </div>
+  <div class="card">
+    <h3>Hand in my results</h3>
+    <p class="small">Type your name, copy your results and paste them where your teacher tells you (e.g. IServ or Teams).</p>
+    <input type="text" id="sname" placeholder="First name and last name" autocomplete="name">
+    <div class="row"><button class="primary" id="copyres">Copy my results</button></div>
+    <textarea id="restext" readonly style="min-height:150px" hidden></textarea>
+    <div id="copyfb"></div>
+  </div>
+</section>
+
+<section class="panel" id="p-cards" hidden>
+  <div><h2>1 · Flashcards</h2><p class="lead">Tap the card to turn it. Then say honestly: did you know it?</p></div>
+  <div class="levels" role="group" aria-label="Direction">
+    <button class="lvl" data-dir="en" aria-pressed="true">English → German</button>
+    <button class="lvl" data-dir="de" aria-pressed="false">German → English</button>
+  </div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><span class="prog" id="fcprog"></span><button id="fconly">Only “not yet” cards</button></div>
+    <div class="flash" id="flash" role="button" tabindex="0" aria-live="polite"></div>
+    <div class="row" style="justify-content:center"><button id="fcno">✗ Not yet</button><button class="primary" id="fcyes">✓ I knew it</button></div>
+  </div>
+  <div class="card"><h3>Your cards</h3><div class="chiplist" id="fcchips"></div></div>
+</section>
+
+<section class="panel" id="p-match" hidden>
+  <div><h2>2 · Match</h2><p class="lead">Three rounds with five chunks each.</p></div>
+  <div class="levels" role="group" aria-label="Round">
+    <button class="lvl" data-mr="0" aria-pressed="true">Round 1</button><button class="lvl" data-mr="1" aria-pressed="false">Round 2</button><button class="lvl" data-mr="2" aria-pressed="false">Round 3</button>
+  </div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><h3>Choose the German meaning</h3><span class="score" id="ms">0 / 5</span></div>
+    <div id="mlist"></div>
+    <div class="row"><button class="primary" id="mcheck">Check</button><button id="mshow" hidden>Show correct answers</button></div>
+    <div id="mfb"></div>
+  </div>
+</section>
+
+<section class="panel" id="p-gaps" hidden>
+  <div><h2>3 · Gap fill</h2><p class="lead">New sentences, same chunks. Sometimes you need to change the form a little – the list shows the form you need.</p></div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><h3>Complete the sentences</h3><span class="score" id="gs">0 / 10</span></div>
+    <div id="glist"></div>
+    <div class="row"><button class="primary" id="gcheck">Check</button><button id="gshow" hidden>Show correct answers</button></div>
+    <div id="gfb"></div>
+  </div>
+</section>
+
+<section class="panel" id="p-type" hidden>
+  <div><h2>4 · Type it</h2><p class="lead">Read the German and type the English chunk. Small spelling mistakes are okay. Need help? Use the hint.</p></div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><span class="prog" id="tprog"></span><span class="score" id="ts">0 correct</span></div>
+    <p style="font-family:var(--display);font-size:22px" id="tq"></p>
+    <input type="text" id="tin" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type the English chunk …">
+    <div class="row"><button class="primary" id="tcheck">Check</button><button id="thint">Hint</button><button id="tnext">Next</button></div>
+    <div id="tfb"></div>
+  </div>
+</section>
+
+<section class="panel" id="p-use" hidden>
+  <div><h2>5 · Use it</h2><p class="lead">Write your own sentences. Each one must use the chunk and say something about self-help, social media or your own life.</p></div>
+  <div class="card"><div id="ulist"></div></div>
+  <div class="card">
+    <h3>Bonus: one SEXI argument with two chunks</h3>
+    <p class="small">Self-help – bunk or beneficial? Statement, Explanation, eXample, Illustration. Use at least two chunks.</p>
+    <textarea id="bonus" placeholder="S … E This is because … X For example, … I Imagine …"></textarea>
+    <div class="row"><button id="bcheck">Check</button></div><div id="bfb"></div>
+  </div>
+</section>
+
+<section class="panel" id="p-review" hidden>
+  <div><h2>Review the lesson</h2><p class="lead">Short check of the text and of SEXI.</p></div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><h3>True or false? <span class="pill">AFB I</span></h3><span class="score" id="tfs">0 / 8</span></div>
+    <div id="tflist"></div>
+  </div>
+  <div class="card">
+    <div class="row" style="justify-content:space-between"><h3>Example or illustration? <span class="pill">AFB II</span></h3><span class="score" id="xis">0 / 6</span></div>
+    <p class="small">X = proof (a line, a fact). I = a picture the audience can see.</p>
+    <div id="xilist"></div>
+  </div>
+</section>
+
+<div class="foot small" style="margin-top:28px">
+  <span>Your answers stay on this device only. Nothing is sent anywhere.</span>
+  <button id="reset">Start again</button>
+</div>
+</div>
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const store={get(k,d){try{const v=localStorage.getItem('shv:'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('shv:'+k,JSON.stringify(v))}catch(e){}}};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function shuffle(a,seed){a=a.slice();let s=seed||7;for(let i=a.length-1;i>0;i--){s=(s*9301+49297)%233280;const j=Math.floor(s/233280*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const words=t=>(t.trim().match(/[A-Za-z’'-]+/g)||[]).length;
+const fb=(c,h)=>`<div class="fb ${c}">${h}</div>`;
+const norm=t=>t.toLowerCase().replace(/[’']/g,"'").replace(/[^a-z' -]/g,'').replace(/\s+/g,' ').trim();
+function lev(a,b){const m=a.length,n=b.length;const d=Array.from({length:m+1},(_,i)=>[i]);for(let j=1;j<=n;j++)d[0][j]=j;
+ for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[m][n]}
+
+/* 15 chunks: [English, German, accept-regex, example from the text] */
+const C=[
+['banish my limiting beliefs','meine selbstbegrenzenden Glaubenssätze verbannen',/banish\w*\s+(my|your|our|their|his|her)?\s*limiting belief/,'l. 4'],
+['self-styled personal improvement gurus','selbsternannte Gurus der Selbstoptimierung',/self[- ]styled (personal improvement )?gurus?/,'l. 8'],
+['dipped my toe into manifesting','erste Erfahrungen mit dem Manifestieren gemacht',/dip\w* (my|a|her|his|your)? ?toes? in(to)? manifesting/,'l. 10'],
+['bordered on dangerous','grenzte an Gefährlichkeit',/border(ed|s)? on dangerous/,'l. 14'],
+['vulnerable to the industry’s promises','anfällig für die Versprechen der Branche',/vulnerable to the industr(y|ies)'?s? promises/,'l. 19'],
+['dependency took a particularly strong hold','die Abhängigkeit griff besonders stark um sich',/dependency took (a )?(particularly )?(strong )?hold/,'l. 22'],
+['process the loss','den Verlust verarbeiten',/process(ing)? the loss/,'l. 25'],
+['stocked up on content','mich mit Inhalten eingedeckt',/stock(ed)? up on content/,'l. 27'],
+['incurable neurological disease','unheilbare neurologische Krankheit',/incurable neurolog\w* disease/,'l. 31'],
+['my own personal failing','mein eigenes persönliches Versagen',/(my )?(own )?personal failing/,'ll. 31–32'],
+['self-help had become toxic','Selbsthilfe war toxisch geworden',/self[- ]help (had )?(become|became) toxic/,'l. 33'],
+['trying to silence or change them','sie zum Schweigen bringen oder verändern wollen',/(trying to )?silence or change them/,'l. 39'],
+['self-help crutch','Krücke der Selbsthilfe',/(my )?self[- ]help crutch/,'l. 42'],
+['makes happiness conditional','macht Glück an Bedingungen geknüpft',/makes? happiness conditional/,'l. 43'],
+['unconditionally accepting your imperfectly perfect self','dein unvollkommen perfektes Selbst bedingungslos annehmen',/(unconditionally )?accept\w* (your|my) imperfectly perfect self/,'l. 45']];
+
+/* tabs */
+const tabs=['start','cards','match','gaps','type','use','review'];
+function show(t){if(!tabs.includes(t))t='start';tabs.forEach(x=>$('#p-'+x).hidden=x!==t);$$('nav.steps a').forEach(a=>a.setAttribute('aria-current',a.dataset.tab===t?'page':'false'));store.set('tab',t);if(t==='start')progress()}
+$$('nav.steps a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();show(a.dataset.tab);try{history.replaceState(null,'','#'+a.dataset.tab)}catch(_){}window.scrollTo({top:0})}));
+
+/* 1 flashcards */
+let known=store.get('known',{}),dir=store.get('dir','en'),only=false,order=shuffle(C.map((_,i)=>i),Date.now()%997),pos=0,flipped=false;
+function deck(){return only?order.filter(i=>!known[i]):order}
+function fcRender(){const dk=deck();if(!dk.length){$('#flash').innerHTML='All cards marked as known. 🎉<small>Switch off “only not yet” or practise the other direction.</small>';$('#fcprog').textContent='';chips();return}
+ if(pos>=dk.length)pos=0;const c=C[dk[pos]];const front=dir==='en'?c[0]:c[1],back=dir==='en'?c[1]:c[0];
+ $('#flash').classList.toggle('back',flipped);$('#flash').innerHTML=esc(flipped?back:front)+`<small>${flipped?'Text 4, '+c[3]:'Tap to turn'}</small>`;
+ $('#fcprog').textContent=`Card ${pos+1} of ${dk.length}`;chips()}
+function chips(){$('#fcchips').innerHTML=C.map((c,i)=>`<span class="chip ${known[i]===true?'k':known[i]===false?'n':''}">${esc(c[0])}</span>`).join('')}
+$('#flash').addEventListener('click',()=>{flipped=!flipped;fcRender()});$('#flash').addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();flipped=!flipped;fcRender()}});
+function mark(v){const dk=deck();if(!dk.length)return;known[dk[pos]]=v;store.set('known',known);flipped=false;if(!(only&&v))pos++;fcRender()}
+$('#fcyes').addEventListener('click',()=>mark(true));$('#fcno').addEventListener('click',()=>mark(false));
+$('#fconly').addEventListener('click',()=>{only=!only;pos=0;$('#fconly').textContent=only?'Show all cards':'Only “not yet” cards';fcRender()});
+$$('[data-dir]').forEach(b=>{b.setAttribute('aria-pressed',b.dataset.dir===dir);b.addEventListener('click',()=>{dir=b.dataset.dir;store.set('dir',dir);$$('[data-dir]').forEach(x=>x.setAttribute('aria-pressed',x===b));flipped=false;fcRender()})});
+fcRender();
+
+/* 2 match */
+let mr=0;const mscore=store.get('mscore',{});
+function mRender(){const ids=[0,1,2,3,4].map(k=>mr*5+k);const opts=shuffle(ids.map(i=>C[i][1]),mr+3);const sv=store.get('m'+mr,{});
+ $('#mlist').innerHTML=ids.map((i,k)=>`<div class="item" id="mi${k}"><label for="m-${k}"><b>${esc(C[i][0])}</b></label><select id="m-${k}"><option value="">Choose …</option>${opts.map(o=>`<option${sv[k]===o?' selected':''}>${esc(o)}</option>`).join('')}</select></div>`).join('');
+ $('#ms').textContent=(mscore[mr]||0)+' / 5';$('#mfb').innerHTML='';$('#mshow').hidden=true}
+$('#mlist').addEventListener('change',()=>{const s={};for(let k=0;k<5;k++)s[k]=$('#m-'+k).value;store.set('m'+mr,s)});
+$('#mcheck').addEventListener('click',()=>{let n=0;for(let k=0;k<5;k++){const v=$('#m-'+k).value,it=$('#mi'+k);it.classList.remove('ok','no');if(!v)continue;if(v===C[mr*5+k][1]){n++;it.classList.add('ok')}else it.classList.add('no')}
+ mscore[mr]=n;store.set('mscore',mscore);$('#ms').textContent=n+' / 5';$('#mshow').hidden=n===5;
+ $('#mfb').innerHTML=n===5?fb('good',mr<2?'All correct. Go on to the next round.':'All three rounds done? Then try the gap fill.'):fb('warn',`${n} of 5. Change the red ones and check again.`)});
+$('#mshow').addEventListener('click',()=>{for(let k=0;k<5;k++)$('#m-'+k).value=C[mr*5+k][1];$('#mcheck').click()});
+$$('[data-mr]').forEach(b=>b.addEventListener('click',()=>{mr=+b.dataset.mr;$$('[data-mr]').forEach(x=>x.setAttribute('aria-pressed',x===b));mRender()}));
+mRender();
+
+/* 3 gap fill */
+const GB=['self-styled gurus','dipped her toe into','borders on dangerous','vulnerable to the industry’s promises','process the loss','stocked up on','your own personal failing','crutch','makes happiness conditional','accept her imperfectly perfect self','banish your limiting beliefs','toxic'];
+const G=[['Many','self-styled gurus','on TikTok promise that you can become rich in 30 days.'],['At first she only','dipped her toe into','manifesting, but soon she tried everything.'],
+ ['Telling people to stop taking their medicine','borders on dangerous','.'],['Lonely teenagers are often especially','vulnerable to the industry’s promises','.'],
+ ['After his grandmother died, he needed time to','process the loss','.'],['Before the exams, I','stocked up on','motivational videos instead of studying.'],
+ ['If you fail an exam, it is not always','your own personal failing',' – sometimes the system is the problem.'],['The app became a','crutch',': it helped at first, but later she couldn’t do anything without it.'],
+ ['“I can only be happy when I have 10,000 followers.” This kind of thinking','makes happiness conditional','.'],['Instead of always trying to improve, she finally learned to','accept her imperfectly perfect self','.']];
+const gopts=shuffle(GB,13),gsv=store.get('g',{});
+$('#glist').innerHTML=`<p class="small">Two expressions are not needed.</p>`+G.map((s,i)=>`<div class="item" id="gi${i}"><label for="g-${i}">${i+1}. ${esc(s[0])} ___ ${esc(s[2])}</label><select id="g-${i}"><option value="">Choose …</option>${gopts.map(o=>`<option${gsv[i]===o?' selected':''}>${esc(o)}</option>`).join('')}</select></div>`).join('');
+$('#glist').addEventListener('change',()=>{const s={};G.forEach((_,i)=>s[i]=$('#g-'+i).value);store.set('g',s)});
+$('#gcheck').addEventListener('click',()=>{let n=0;G.forEach((s,i)=>{const v=$('#g-'+i).value,it=$('#gi'+i);it.classList.remove('ok','no');if(!v)return;if(v===s[1]){n++;it.classList.add('ok')}else it.classList.add('no')});
+ store.set('gscore',n);$('#gs').textContent=n+' / 10';$('#gshow').hidden=n===10;
+ $('#gfb').innerHTML=n===10?fb('good','All correct. Now try to type the chunks from memory.'):fb(n>=7?'warn':'bad',`${n} of 10. Read the whole sentence: does the meaning fit, and does the grammar fit (after “to” a verb, after “a” a noun)?`)});
+$('#gshow').addEventListener('click',()=>{G.forEach((s,i)=>$('#g-'+i).value=s[1]);$('#gcheck').click()});
+$('#gs').textContent=store.get('gscore',0)+' / 10';
+
+/* 4 type it */
+let tord=shuffle(C.map((_,i)=>i),Date.now()%631),tp=0,hint=0;const tdone=store.get('tdone',{});
+function tRender(){const c=C[tord[tp]];$('#tq').textContent=c[1];$('#tin').value='';$('#tfb').innerHTML='';hint=0;$('#tprog').textContent=`${tp+1} of 15`;$('#ts').textContent=Object.keys(tdone).length+' / 15 correct'}
+function tCheck(){const c=C[tord[tp]],a=norm($('#tin').value),t=norm(c[0]);if(!a){$('#tfb').innerHTML=fb('warn','Type your answer first.');return}
+ const ok=c[2].test(a)||lev(a,t)<=Math.max(2,Math.round(t.length*0.1));
+ if(ok){tdone[tord[tp]]=1;store.set('tdone',tdone);$('#tfb').innerHTML=fb('good',`Correct: <b>${esc(c[0])}</b> (Text 4, ${c[3]}).`);$('#ts').textContent=Object.keys(tdone).length+' / 15 correct'}
+ else $('#tfb').innerHTML=fb('bad',`Not quite. Try again, use a hint, or look at the answer: <details><summary>Show answer</summary>${esc(c[0])}</details>`)}
+$('#tcheck').addEventListener('click',tCheck);$('#tin').addEventListener('keydown',e=>{if(e.key==='Enter')tCheck()});
+$('#thint').addEventListener('click',()=>{const c=C[tord[tp]][0];hint++;const w=c.split(' ');$('#tfb').innerHTML=fb('warn','Hint: '+esc(w.map((x,i)=>i<hint?x:x[0]+'…').join(' ')))});
+$('#tnext').addEventListener('click',()=>{tp=(tp+1)%15;tRender()});tRender();
+
+/* 5 use it */
+const U=[['vulnerable to …',/vulnerable/i,'Teenagers who feel lonely are especially vulnerable to the promises of influencers.'],['self-styled gurus',/self[- ]styled/i,'Many self-styled gurus on Instagram sell courses without any training.'],
+ ['border(s/ed) on dangerous',/border(s|ed)? on/i,'Advice to stop eating for days borders on dangerous.'],['a personal failing',/personal failing/i,'Not getting a job straight away is not a personal failing.'],
+ ['a crutch',/crutch/i,'For me, my phone is sometimes a crutch when I feel nervous.'],['makes happiness conditional',/conditional/i,'Comparing yourself on social media makes happiness conditional.']];
+const us=store.get('u',{});
+$('#ulist').innerHTML=U.map((u,i)=>`<div class="item"><label for="u-${i}"><b>${i+1}. Use: ${esc(u[0])}</b></label><input type="text" id="u-${i}" value="${esc(us[i]||'')}"><div class="row"><button data-u="${i}">Check</button></div><div id="ufb${i}"></div></div>`).join('');
+$('#ulist').addEventListener('input',()=>{const s={};U.forEach((_,i)=>s[i]=$('#u-'+i).value);store.set('u',s)});
+$('#ulist').addEventListener('click',e=>{const i=e.target.dataset.u;if(i==null)return;const u=U[i],t=$('#u-'+i).value,r=[];
+ r.push(u[1].test(t)?['good','You used the chunk.']:['warn','The chunk is missing: '+esc(u[0])+'.']);r.push(words(t)>=8?['good','Full sentence.']:['warn','Write a longer sentence (at least 8 words).']);
+ if(t.trim()&&!/[.!?]$/.test(t.trim()))r.push(['warn','End your sentence with a full stop.']);
+ const ok=r.every(x=>x[0]==='good');if(ok){const d=store.get('udone',{});d[i]=1;store.set('udone',d)}
+ $('#ufb'+i).innerHTML=r.map(x=>fb(x[0],x[1])).join('')+`<details><summary>Example sentence</summary><div class="model">${esc(u[2])}</div></details>`});
+$('#bonus').value=store.get('bonus','');$('#bonus').addEventListener('input',()=>store.set('bonus',$('#bonus').value));
+$('#bcheck').addEventListener('click',()=>{const t=$('#bonus').value,n=C.filter(c=>c[2].test(norm(t))).length+U.filter(u=>u[1].test(t)&&!C.some(c=>c[2].test(norm(t))&&c[0].includes(u[0].split(' ')[0]))).length;
+ const r=[];r.push(n>=2?['good',`You used ${n} chunks.`]:['warn',`Chunks found: ${n}. Use at least two.`]);r.push(/\b(because|this means|since|that is why)\b/i.test(t)?['good','E: you explain why.']:['warn','E: add “This is because …”.']);
+ r.push(/(ll?\.\s*\d+)|for example|goddard|emily/i.test(t)?['good','X: you give proof.']:['warn','X: add an example from the text (l. …).']);r.push(/\b(imagine|it'?s like|it’s like|picture)\b/i.test(t)?['good','I: you illustrate.']:['warn','I: add “Imagine …” or “It’s like …”.']);
+ $('#bfb').innerHTML=r.map(x=>fb(x[0],x[1])).join('')});
+
+/* review */
+const TF=[['Emily bought her first self-help book when she was in a happy relationship.',false,'ll. 1–2: “one of the most toxic relationships of my life”.'],['Over 15 years, she bought hundreds of self-help books, courses and apps.',true,'ll. 7–8.'],
+ ['All the advice she got was dangerous.',false,'ll. 13–14: some approaches were “gentle and perhaps even obvious”.'],['She was encouraged to spend money she could not afford to “manifest” wealth.',true,'ll. 14–15.'],
+ ['Her childhood made her vulnerable to the industry’s promises.',true,'ll. 18–19.'],['After her father’s death, reading about grief helped her to grieve.',false,'ll. 22–25: ironically, she did not do what she needed.'],
+ ['Following the advice cured her multiple sclerosis.',false,'ll. 29–31: an incurable neurological disease.'],['In the end she thinks that perhaps she never needed fixing at all.',true,'ll. 46–47.']];
+const tfs=store.get('tf',{});
+function tfR(){let n=0;$('#tflist').innerHTML=TF.map((q,i)=>{const a=tfs[i];let c='',f='';if(a!=null){const ok=a===q[1];if(ok)n++;c=ok?'ok':'no';f=fb(ok?'good':'bad',(ok?'Correct. ':'Not quite. ')+esc(q[2]))}
+ return `<div class="item ${c}"><span>${i+1}. ${esc(q[0])}</span><div class="tf"><button data-tf="${i}" data-a="1" aria-pressed="${a===true}">True</button><button data-tf="${i}" data-a="0" aria-pressed="${a===false}">False</button></div>${f}</div>`}).join('');$('#tfs').textContent=n+' / 8';store.set('tfscore',n)}
+$('#tflist').addEventListener('click',e=>{const b=e.target.closest('[data-tf]');if(!b)return;tfs[b.dataset.tf]=b.dataset.a==='1';store.set('tf',tfs);tfR()});tfR();
+const XI=[['Goddard bought hundreds of books, courses and apps in 15 years (ll. 7–8).','X'],['Picture yourself scrolling through guru videos at 2 a.m., hoping the next one will fix your life.','I'],
+ ['Goddard was told to ignore her health problems in order to feel healthy (ll. 15–16).','X'],['It’s like taking a painkiller for a broken leg and then trying to run a marathon.','I'],
+ ['A self-help book costs about 15 euros, while a place in therapy can take months to get.','X'],['Imagine a friend who says “just think positive” every time you tell her about a real problem.','I']];
+const xis=store.get('xi',{});
+function xiR(){let n=0;$('#xilist').innerHTML=XI.map((q,i)=>{const a=xis[i];let c='',f='';if(a){const ok=a===q[1];if(ok)n++;c=ok?'ok':'no';f=fb(ok?'good':'bad',ok?'Correct.':(q[1]==='X'?'This is proof: a fact or a line.':'This is a picture the audience can imagine.'))}
+ return `<div class="item ${c}"><span>${i+1}. ${esc(q[0])}</span><div class="tf"><button data-xi="${i}" data-a="X" aria-pressed="${a==='X'}">X · example</button><button data-xi="${i}" data-a="I" aria-pressed="${a==='I'}">I · illustration</button></div>${f}</div>`}).join('');$('#xis').textContent=n+' / 6'}
+$('#xilist').addEventListener('click',e=>{const b=e.target.closest('[data-xi]');if(!b)return;xis[b.dataset.xi]=b.dataset.a;store.set('xi',xis);xiR()});xiR();
+
+/* progress */
+function progress(){const k=Object.values(store.get('known',{})).filter(v=>v===true).length,ms=store.get('mscore',{}),m=(ms[0]||0)+(ms[1]||0)+(ms[2]||0);
+ const row=(l,v,max)=>`<div class="meter"><span style="min-width:120px">${l}</span><span class="bar"><i style="width:${Math.round(100*v/max)}%"></i></span><span>${v} / ${max}</span></div>`;
+ $('#progress').innerHTML=row('Flashcards known',k,15)+row('Match',m,15)+row('Gap fill',store.get('gscore',0),10)+row('Type it',Object.keys(store.get('tdone',{})).length,15)+row('Use it',Object.keys(store.get('udone',{})).length,6)+row('Text check',store.get('tfscore',0),8)}
+$('#refresh').addEventListener('click',progress);
+$('#sname').value=store.get('sname','');$('#sname').addEventListener('input',()=>store.set('sname',$('#sname').value));
+function resultText(){const kn=store.get('known',{}),ms=store.get('mscore',{}),m=(ms[0]||0)+(ms[1]||0)+(ms[2]||0);
+ const notyet=C.filter((c,i)=>kn[i]!==true).map(c=>c[0]);const d=new Date();
+ return ['Self-help vocabulary trainer (Eng 13)','Name: '+($('#sname').value.trim()||'–'),'Date: '+d.toLocaleDateString('de-DE')+' '+d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}),
+  'Flashcards known: '+Object.values(kn).filter(v=>v===true).length+'/15','Match: '+m+'/15','Gap fill: '+store.get('gscore',0)+'/10',
+  'Type it: '+Object.keys(store.get('tdone',{})).length+'/15','Use it: '+Object.keys(store.get('udone',{})).length+'/6','Text check: '+store.get('tfscore',0)+'/8',
+  'Still practising: '+(notyet.length?notyet.join('; '):'nothing – all known')].join('\n')}
+$('#copyres').addEventListener('click',async()=>{if(!$('#sname').value.trim()){$('#copyfb').innerHTML=fb('warn','Type your name first.');return}
+ progress();const t=resultText(),ta=$('#restext');ta.hidden=false;ta.value=t;let ok=false;
+ try{await navigator.clipboard.writeText(t);ok=true}catch(e){try{ta.focus();ta.select();ok=document.execCommand('copy')}catch(_){}}
+ $('#copyfb').innerHTML=ok?fb('good','Copied. Now paste it where your teacher tells you.'):fb('warn','Copying did not work. Select the text above and copy it by hand.')});
+
+$('#reset').addEventListener('click',()=>{if(!confirm('Delete all your answers on this device and start again?'))return;try{Object.keys(localStorage).filter(k=>k.startsWith('shv:')).forEach(k=>localStorage.removeItem(k))}catch(e){}location.hash='';location.reload()});
+show((location.hash||'').slice(1)||store.get('tab','start'));
+})();
+</script>
